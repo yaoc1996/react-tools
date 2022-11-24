@@ -1,6 +1,7 @@
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
+import { babel, getBabelOutputPlugin } from "@rollup/plugin-babel";
 import dts from "rollup-plugin-dts";
 
 export default [
@@ -11,18 +12,36 @@ export default [
 				file: "dist/cjs/index.js",
 				format: "cjs",
 				sourcemap: true,
+				plugins: [
+					getBabelOutputPlugin({
+						presets: [
+							["@babel/preset-react", { runtime: "automatic" }],
+						],
+					}),
+				],
 			},
 			{
 				file: "dist/esm/index.js",
 				format: "esm",
 				sourcemap: true,
+				plugins: [
+					getBabelOutputPlugin({
+						presets: [
+							["@babel/preset-react", { runtime: "automatic" }],
+						],
+					}),
+				],
 			},
 		],
 		plugins: [
 			resolve(),
 			commonjs(),
 			typescript({ tsconfig: "./tsconfig.json" }),
+			babel({
+				presets: [["@babel/preset-react", { runtime: "automatic" }]],
+			}),
 		],
+		external: ["react", "lodash"],
 	},
 	{
 		input: "dist/esm/index.d.ts",

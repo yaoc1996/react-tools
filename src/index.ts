@@ -1,1 +1,1 @@
-export { createSharedContext } from "./react-shared-context";
+export { default as SharedContextProvider } from "./react-shared-context";
